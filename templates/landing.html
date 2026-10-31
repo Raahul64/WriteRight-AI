@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>WriteRight AI — Your Words, Refined</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="WriteRight AI is a free, offline-capable AI writing assistant powered by T5 grammar correction, SymSpell and NLTK. Correct grammar, improve spelling and enhance your writing style.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/landing.css">
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand" aria-label="WriteRightAI home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m5 17.5 1.1-4.1L15.7 3.8a1.8 1.8 0 0 1 2.5 0l2 2a1.8 1.8 0 0 1 0 2.5l-9.6 9.6L6.5 19l-1.5-1.5Z"/>
+          <path d="m13.9 5.6 4.5 4.5M5 17.5l3.1-3.1"/>
+          <path d="m5 21 5.5-1.5"/>
+          <path d="M18.5 13.5v3M17 15h3"/>
+        </svg>
+      </span>
+      <span class="brand-wordmark">WriteRightAI</span>
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#technology">Technology</a></li>
+      <li><a href="#about">About</a></li>
+      <li class="nav-cta">
+        <a href="/corrector" class="btn btn-primary nav-cta-btn" id="nav-try-btn">Try WriteRightAI →</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="container">
+    <div class="hero-layout">
+      <div class="hero-text">
+        <div class="hero-eyebrow">
+          <span class="section-tag">Free &amp; No API Keys Required</span>
+        </div>
+        <h1 id="hero-heading" class="hero-heading">
+          Your Words,<br>
+          <em class="serif hero-italic">Refined.</em><br>
+          Your Ideas,<br>
+          <em class="serif hero-italic">Amplified.</em>
+        </h1>
+        <p class="hero-sub">
+          Write confidently with AI-powered grammar correction, intelligent rewriting and writing insights. Make every sentence clearer, stronger and more professional.
+        </p>
+        <div class="hero-actions">
+          <a href="/corrector" class="btn btn-primary btn-lg" id="hero-cta-primary">
+            Start Writing for Free
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#features" class="btn btn-outline btn-lg" id="hero-cta-secondary">Explore Features</a>
+        </div>
+        <p class="hero-note">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Powered by pretrained NLP models — no paid API keys needed
+        </p>
+      </div>
+
+      <!-- Product Preview -->
+      <div class="hero-preview" aria-label="Product preview" role="img">
+        <div class="preview-card">
+          <div class="preview-header">
+            <span class="preview-dot" style="background:#f87171"></span>
+            <span class="preview-dot" style="background:#fbbf24"></span>
+            <span class="preview-dot" style="background:#6b7280; opacity:.4"></span>
+            <span class="preview-title">WriteRight AI — Editor</span>
+          </div>
+          <div class="preview-body">
+            <div class="preview-label">Your Text</div>
+            <div class="preview-input">
+              i has went to the market yesterday and <mark class="preview-err">buyed</mark> some <mark class="preview-err">vegitables</mark>. Me and my friend was very happy.
+            </div>
+            <div class="preview-mode-row">
+              <span class="preview-badge">Basic Correction</span>
+              <span class="preview-btn">Improve Text →</span>
+            </div>
+            <div class="preview-divider"></div>
+            <div class="preview-label">Improved Text</div>
+            <div class="preview-output">
+              I went to the market yesterday and <mark class="preview-fix">bought</mark> some <mark class="preview-fix">vegetables</mark>. My friend and I were very happy.
+            </div>
+            <div class="preview-stats-row">
+              <div class="preview-stat"><strong>2</strong><span>Spelling</span></div>
+              <div class="preview-stat"><strong>3</strong><span>Grammar</span></div>
+              <div class="preview-stat preview-stat-score"><strong>78</strong><span>Score /100</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="section bg-section" id="features" aria-labelledby="features-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="section-tag">Features</span>
+      <h2 class="section-title" id="features-heading">Everything You Need to Write Better</h2>
+      <p class="section-sub">A complete AI writing toolkit built on open, pretrained NLP models — entirely free, with no subscriptions or API keys.</p>
+    </div>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z"/></svg>
+        </div>
+        <h3>Smart Grammar Correction</h3>
+        <p>Automatically identify and correct grammatical mistakes using a fine-tuned T5 transformer model trained for grammar correction.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h14"/></svg>
+        </div>
+        <h3>Intelligent Spell Checking</h3>
+        <p>Identify spelling errors and suggest appropriate replacements using SymSpell's high-performance edit-distance dictionary lookup.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <h3>Writing Style Enhancement</h3>
+        <p>Rewrite your text in six distinct styles — Professional, Academic, Formal, Simple, Concise and Vocabulary-Enhanced — using FLAN-T5.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </div>
+        <h3>Before &amp; After Comparison</h3>
+        <p>See exactly how your original writing changes after correction with word-level diff highlighting — red for removed, green for corrected.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Writing Quality Insights</h3>
+        <p>View detailed statistics: word count, character count, sentence count, grammar and spelling errors, readability scores and an overall improvement score.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>Grammar Explanations</h3>
+        <p>Understand why each correction was made — capitalization, punctuation, article usage, prepositions, verb agreement and sentence structure — not just what changed.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section" id="how-it-works" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="section-header center">
+      <span class="section-tag">How It Works</span>
+      <h2 class="section-title" id="how-heading">Three Steps to Better Writing</h2>
+      <p class="section-sub">WriteRight AI is designed to be effortless. Paste your text, choose a style and get results in seconds.</p>
+    </div>
+    <div class="steps-layout">
+      <div class="step-connector" aria-hidden="true"></div>
+      <div class="step">
+        <div class="step-number" aria-hidden="true">01</div>
+        <div class="step-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z"/></svg>
+        </div>
+        <h3>Enter Your Text</h3>
+        <p>Paste or type your content into the editor. You can input up to 5,000 characters — emails, essays, reports or any written content.</p>
+      </div>
+      <div class="step">
+        <div class="step-number" aria-hidden="true">02</div>
+        <div class="step-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <h3>Choose Your Writing Style</h3>
+        <p>Select basic grammar correction or choose a rewriting style: Professional, Academic, Formal, Simple English, Concise or Vocabulary Enhancement.</p>
+      </div>
+      <div class="step">
+        <div class="step-number" aria-hidden="true">03</div>
+        <div class="step-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <h3>Improve &amp; Download</h3>
+        <p>Review corrected text, see the before-and-after comparison, explore grammar explanations and download your polished writing as a text file.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TECHNOLOGY ============ -->
+<section class="section bg-section" id="technology" aria-labelledby="tech-heading">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Under the Hood</span>
+      <h2 class="section-title" id="tech-heading">Powered by Intelligent Language Models</h2>
+      <p class="section-sub">WriteRight AI uses a pipeline of open, pretrained NLP models and libraries — no paid AI APIs required. All processing happens locally after the initial model download.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-logo" aria-hidden="true">T5</div>
+        <div class="tech-info">
+          <h3>T5 Grammar Correction</h3>
+          <p>Vennify's T5-base model, fine-tuned specifically for English grammar correction using Hugging Face Transformers.</p>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo" aria-hidden="true">FT5</div>
+        <div class="tech-info">
+          <h3>FLAN-T5 Style Rewriting</h3>
+          <p>Google's instruction-tuned FLAN-T5-base model handles style rewriting across six distinct writing modes.</p>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo" aria-hidden="true">SS</div>
+        <div class="tech-info">
+          <h3>SymSpell Spell Checking</h3>
+          <p>SymSpell's high-performance edit-distance dictionary (882k words) corrects spelling errors with sub-millisecond lookup times.</p>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo" aria-hidden="true">NL</div>
+        <div class="tech-info">
+          <h3>NLTK Sentence Tokenization</h3>
+          <p>NLTK's punkt sentence tokenizer accurately splits text into sentences before grammar correction is applied per-sentence.</p>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo" aria-hidden="true">TS</div>
+        <div class="tech-info">
+          <h3>TextStat Readability</h3>
+          <p>Flesch Reading Ease scores measure readability before and after correction to quantify writing improvement objectively.</p>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo" aria-hidden="true">Δ</div>
+        <div class="tech-info">
+          <h3>Python difflib Diff</h3>
+          <p>Word-level diff using Python's difflib SequenceMatcher generates the colour-highlighted before-and-after comparison view.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section" id="about" aria-labelledby="about-heading">
+  <div class="container">
+    <div class="about-layout">
+      <div class="about-text">
+        <span class="section-tag">About</span>
+        <h2 class="section-title" id="about-heading">Making Better Writing Accessible to Everyone</h2>
+        <p style="font-size:16px; line-height:1.8; margin-bottom:20px;">
+          WriteRight AI is a free AI-powered writing assistant designed to make better writing accessible to everyone. It combines pretrained NLP transformer models and intelligent text-processing techniques to correct grammar, improve spelling, enhance writing style and provide meaningful writing insights.
+        </p>
+        <p style="font-size:15px; line-height:1.8; margin-bottom:28px;">
+          Unlike paid writing tools that rely on expensive large language model APIs, WriteRight AI uses locally downloaded pretrained models — meaning it works offline after the initial model download and never sends your writing to any external service.
+        </p>
+        <div class="about-points">
+          <div class="about-point">
+            <svg viewBox="0 0 24 24" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>100% free — no subscriptions, no API costs</span>
+          </div>
+          <div class="about-point">
+            <svg viewBox="0 0 24 24" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Offline-capable after initial model download (~1.5 GB)</span>
+          </div>
+          <div class="about-point">
+            <svg viewBox="0 0 24 24" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Your writing is never sent to external AI services</span>
+          </div>
+          <div class="about-point">
+            <svg viewBox="0 0 24 24" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Open-source pretrained models via Hugging Face</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual" aria-hidden="true">
+        <div class="about-card">
+          <div class="about-card-item">
+            <span class="about-card-num">T5</span>
+            <span>Grammar Correction Model</span>
+          </div>
+          <div class="about-card-item">
+            <span class="about-card-num">6</span>
+            <span>Rewriting Style Modes</span>
+          </div>
+          <div class="about-card-item">
+            <span class="about-card-num">882k</span>
+            <span>Word Dictionary (SymSpell)</span>
+          </div>
+          <div class="about-card-item">
+            <span class="about-card-num">∞</span>
+            <span>Free Unlimited Usage</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="cta-section" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="cta-inner">
+      <span class="section-tag" style="background:rgba(255,255,255,.15);color:#fff;">Get Started</span>
+      <h2 id="cta-heading" class="cta-heading">Ready to Make Every<br>Word Count?</h2>
+      <p class="cta-sub">Start improving your writing with WriteRight AI. Free, private and powered by pretrained NLP models.</p>
+      <a href="/corrector" class="btn btn-lg" style="background:#fff;color:var(--primary);border-color:#fff;box-shadow:0 4px 20px rgba(0,0,0,.15);" id="cta-main-btn">
+        Try WriteRight AI
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="navbar-brand" style="margin-bottom:12px;">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </span>
+      </div>
+      <div class="brand-name">WriteRightAI</div>
+      <p>A free AI-powered writing assistant built on pretrained NLP models. Correct grammar, improve spelling and enhance your writing style — no API keys required.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="/corrector">Try the Editor</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Technology</h4>
+      <ul>
+        <li><a href="https://huggingface.co/vennify/t5-base-grammar-correction" target="_blank" rel="noopener">T5 Grammar</a></li>
+        <li><a href="https://huggingface.co/google/flan-t5-base" target="_blank" rel="noopener">FLAN-T5</a></li>
+        <li><a href="https://github.com/wolfgarbe/SymSpell" target="_blank" rel="noopener">SymSpell</a></li>
+        <li><a href="https://www.nltk.org/" target="_blank" rel="noopener">NLTK</a></li>
+        <li><a href="https://pypi.org/project/textstat/" target="_blank" rel="noopener">TextStat</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Project</h4>
+      <ul>
+        <li><a href="https://flask.palletsprojects.com/" target="_blank" rel="noopener">Built with Flask</a></li>
+        <li><a href="https://huggingface.co/" target="_blank" rel="noopener">Hugging Face</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 WriteRight AI. Built with open-source NLP models.</span>
+    <span>No API keys. No subscriptions. Just better writing.</span>
+  </div>
+</footer>
+
+<script src="/static/js/landing.js"></script>
+</body>
+</html>

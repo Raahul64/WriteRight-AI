@@ -94,10 +94,16 @@ def diff_ops(a, b):
 
 def count_words(t): return len(re.findall(r"\b\w+\b", t))
 
-# ---------- API ----------
+# ---------- Routes ----------
 @app.route("/")
-def index():
-    return render_template("index.html")
+def landing():
+    """Landing / marketing page."""
+    return render_template("landing.html")
+
+@app.route("/corrector")
+def corrector():
+    """AI writing workspace."""
+    return render_template("corrector.html")
 
 @app.route("/api/improve", methods=["POST"])
 def improve():
@@ -141,4 +147,4 @@ def improve():
                "improvement_score": score})
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5000)
+    app.run(debug=False, port=5001)

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>WriteRight AI — Your Writing Workspace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="WriteRight AI writing workspace. Enter your text, choose a style and let AI grammar correction improve your writing instantly.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/corrector.css">
+</head>
+<body class="corrector-page">
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand" aria-label="WriteRightAI home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m5 17.5 1.1-4.1L15.7 3.8a1.8 1.8 0 0 1 2.5 0l2 2a1.8 1.8 0 0 1 0 2.5l-9.6 9.6L6.5 19l-1.5-1.5Z"/>
+          <path d="m13.9 5.6 4.5 4.5M5 17.5l3.1-3.1"/>
+          <path d="m5 21 5.5-1.5"/>
+          <path d="M18.5 13.5v3M17 15h3"/>
+        </svg>
+      </span>
+      <span class="brand-wordmark">WriteRightAI</span>
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="/">Home</a></li>
+      <li><a href="/corrector" class="active">Editor</a></li>
+      <li>
+        <span class="nav-badge" aria-label="AI Writing Assistant — active">AI Writing Assistant</span>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ WORKSPACE HEADER ============ -->
+<div class="workspace-header">
+  <div class="container">
+    <h1 class="workspace-title">Your Writing Workspace</h1>
+    <p class="workspace-sub">Enter your text, choose a style and let AI help you write better.</p>
+  </div>
+</div>
+
+<!-- ============ MAIN WORKSPACE ============ -->
+<main class="workspace-main" id="main-content">
+  <div class="container">
+
+    <!-- Editor Panel -->
+    <section class="editor-panel" aria-label="Text editor">
+      <div class="editor-panel-header">
+        <div>
+          <h2 class="panel-title">Your Text</h2>
+          <p class="panel-sub">Paste or type the content you'd like to improve.</p>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="sample-btn" type="button">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Sample Text
+        </button>
+      </div>
+
+      <div class="textarea-wrap">
+        <textarea
+          id="text-input"
+          placeholder="Paste or type your text here… e.g. 'i has went to the market yesterday and buyed some vegitables.'"
+          aria-label="Text to improve"
+          maxlength="5000"
+          rows="10"
+          spellcheck="false"
+        ></textarea>
+        <div class="textarea-footer">
+          <span class="char-counter" id="char-counter" aria-live="polite">0 / 5,000</span>
+          <button class="clear-btn" id="clear-btn" type="button" aria-label="Clear text">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <div class="editor-controls">
+        <div class="mode-group">
+          <label class="mode-label" for="mode-select">Writing Style</label>
+          <div class="select-wrap">
+            <select id="mode-select" aria-label="Select writing style">
+              <option value="basic">Basic Correction</option>
+              <option value="professional">Professional</option>
+              <option value="academic">Academic</option>
+              <option value="formal">Formal</option>
+              <option value="simple">Simple English</option>
+              <option value="concise">Concise</option>
+              <option value="vocabulary">Vocabulary Enhancement</option>
+            </select>
+            <svg class="select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="improve-btn" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Improve Text
+        </button>
+      </div>
+
+      <!-- Error message -->
+      <div class="error-msg" id="error-msg" role="alert" aria-live="assertive"></div>
+
+      <!-- Loading state -->
+      <div class="loading-state" id="loading-state" hidden aria-live="polite" aria-label="Processing">
+        <div class="loading-spinner" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="10" stroke="var(--primary)" stroke-width="2" fill="none" stroke-dasharray="50" stroke-dashoffset="20" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></circle></svg>
+        </div>
+        <p class="loading-text" id="loading-text">Analyzing your writing…</p>
+        <p class="loading-note">The first request may take a minute while pretrained models load into memory.</p>
+      </div>
+    </section>
+
+    <!-- Results Section (hidden until results arrive) -->
+    <section class="results-section" id="results-section" hidden aria-label="Results">
+
+      <!-- Improved Text -->
+      <div class="result-block" id="block-improved">
+        <div class="result-block-header">
+          <div>
+            <h2 class="result-block-title">Improved Text</h2>
+            <p class="result-block-sub">Your writing after AI correction and style enhancement.</p>
+          </div>
+          <div class="result-actions">
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Copy
+            </button>
+            <button class="btn btn-primary btn-sm" id="download-btn" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download .txt
+            </button>
+          </div>
+        </div>
+        <div class="result-text-box" id="improved-output"></div>
+
+        <!-- Alternatives -->
+        <div class="alternatives-block" id="alternatives-block" hidden>
+          <h3 class="alt-title">Alternative Versions</h3>
+          <div class="alternatives-list" id="alternatives-list"></div>
+        </div>
+      </div>
+
+      <!-- Writing Quality Stats -->
+      <div class="result-block" id="block-stats">
+        <div class="result-block-header">
+          <div>
+            <h2 class="result-block-title">Writing Quality</h2>
+            <p class="result-block-sub">How your writing changed after AI correction.</p>
+          </div>
+        </div>
+        <div class="stats-grid" id="stats-grid"></div>
+      </div>
+
+      <!-- Before & After -->
+      <div class="result-block" id="block-diff">
+        <div class="result-block-header">
+          <div>
+            <h2 class="result-block-title">Before &amp; After</h2>
+            <p class="result-block-sub">Word-level diff — <span class="diff-legend-del">removed</span> and <span class="diff-legend-ins">corrected</span> words highlighted.</p>
+          </div>
+        </div>
+        <div class="diff-cols">
+          <div class="diff-pane">
+            <div class="diff-pane-label">Original</div>
+            <div class="diff-content" id="diff-original"></div>
+          </div>
+          <div class="diff-pane">
+            <div class="diff-pane-label">Improved</div>
+            <div class="diff-content" id="diff-improved"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grammar Explanations -->
+      <div class="result-block" id="block-grammar">
+        <div class="result-block-header">
+          <div>
+            <h2 class="result-block-title">Grammar Explanations</h2>
+            <p class="result-block-sub">Each correction explained by type and reason.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="result-table" id="grammar-table" aria-label="Grammar corrections">
+            <thead>
+              <tr>
+                <th>Incorrect</th>
+                <th>Corrected</th>
+                <th>Type</th>
+                <th>Explanation</th>
+              </tr>
+            </thead>
+            <tbody id="grammar-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Spelling Corrections -->
+      <div class="result-block" id="block-spelling">
+        <div class="result-block-header">
+          <div>
+            <h2 class="result-block-title">Spelling Corrections</h2>
+            <p class="result-block-sub">Words corrected by the SymSpell dictionary.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="result-table" id="spelling-table" aria-label="Spelling corrections">
+            <thead>
+              <tr>
+                <th>Misspelled</th>
+                <th>Suggestion</th>
+              </tr>
+            </thead>
+            <tbody id="spelling-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="navbar-brand" style="margin-bottom:12px;">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </span>
+      </div>
+      <div class="brand-name">WriteRight AI</div>
+      <p>A free AI-powered writing assistant built on pretrained NLP models. No API keys required.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/corrector">Editor</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Technology</h4>
+      <ul>
+        <li><a href="https://huggingface.co/vennify/t5-base-grammar-correction" target="_blank" rel="noopener">T5 Grammar</a></li>
+        <li><a href="https://huggingface.co/google/flan-t5-base" target="_blank" rel="noopener">FLAN-T5</a></li>
+        <li><a href="https://github.com/wolfgarbe/SymSpell" target="_blank" rel="noopener">SymSpell</a></li>
+        <li><a href="https://www.nltk.org/" target="_blank" rel="noopener">NLTK</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Project</h4>
+      <ul>
+        <li><a href="https://flask.palletsprojects.com/" target="_blank" rel="noopener">Built with Flask</a></li>
+        <li><a href="https://huggingface.co/" target="_blank" rel="noopener">Hugging Face</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 WriteRight AI. Built with open-source NLP models.</span>
+    <span>No API keys. No subscriptions. Just better writing.</span>
+  </div>
+</footer>
+
+<script src="/static/js/corrector.js"></script>
+</body>
+</html>
