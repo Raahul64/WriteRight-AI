@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>AI Grammar & Text Improver</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--g:#5b6b2f;--gl:#eef1e3;--bd:#d9ddc8;--t:#2b2f1e}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#fff;color:var(--t)}
+header{background:var(--g);color:#fff;padding:18px 28px}header h1{margin:0;font-size:22px}header p{margin:4px 0 0;opacity:.85;font-size:14px}
+main{max-width:1000px;margin:24px auto;padding:0 16px}
+textarea{width:100%;min-height:150px;padding:12px;border:1px solid var(--bd);border-radius:8px;font:15px/1.5 inherit;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+select,button{padding:10px 16px;border-radius:8px;border:1px solid var(--g);font-size:14px}
+button{background:var(--g);color:#fff;cursor:pointer}button.alt{background:#fff;color:var(--g)}button:disabled{opacity:.6}
+.card{border:1px solid var(--bd);border-radius:10px;padding:16px;margin:16px 0;background:#fff}.card h2{margin:0 0 10px;font-size:16px;color:var(--g)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.stat{background:var(--gl);border-radius:8px;padding:10px;text-align:center}.stat b{display:block;font-size:20px}.stat span{font-size:12px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.cols{grid-template-columns:1fr}}
+.pane{background:#fafaf5;border:1px solid var(--bd);border-radius:8px;padding:12px;line-height:1.8}
+del{background:#f8d7d7;text-decoration:line-through}ins{background:#d4ecc0;text-decoration:none}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:1px solid var(--bd);padding:8px;text-align:left}th{background:var(--gl)}
+.err{color:#a33;margin-top:8px}details{margin-top:24px}
+</style></head><body>
+<header><h1>AI Grammar & Text Improver</h1><p>Pretrained NLP models: T5 grammar correction, SymSpell, TextStat</p></header>
+<main>
+<textarea id="text" placeholder="Paste or type your text here..."></textarea>
+<div class="row">
+<select id="mode">
+<option value="basic">Basic Correction</option><option value="professional">Professional</option>
+<option value="academic">Academic</option><option value="formal">Formal</option>
+<option value="simple">Simple English</option><option value="concise">Concise</option>
+<option value="vocabulary">Vocabulary Enhancement</option></select>
+<button id="go">Improve Text</button><button class="alt" id="sample">Sample Text</button>
+</div>
+<div id="err" class="err"></div><div id="out"></div>
+
+<details><summary><b>About this project</b></summary>
+<p><b>Problem:</b> Many people make grammar, spelling and clarity mistakes, and good tools are paid or need an internet API.</p>
+<p><b>Objective:</b> A free, open-model writing assistant that corrects, explains and rewrites text.</p>
+<p><b>AI technique:</b> Transformer seq2seq models (T5) for grammar correction and style rewriting; SymSpell edit-distance spell checking; NLTK sentence tokenization; TextStat readability.</p>
+<p><b>Limitations:</b> Small models can miss errors or change meaning; first request is slow while models load; error types are heuristic labels; English only.</p>
+</details>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+$('sample').onclick=()=>$('text').value="i has went to the market yesterday and buyed some vegitables. Me and my friend was very happy becuase the prices is low. She dont like to waste time on a unnecessary things.";
+let improved="";
+$('go').onclick=async()=>{
+  $('err').textContent="";$('out').innerHTML="";$('go').disabled=true;$('go').textContent="Working (first run loads models)...";
+  try{
+    const r=await fetch('/api/improve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:$('text').value,mode:$('mode').value})});
+    const d=await r.json(); if(!r.ok) throw new Error(d.error||'Request failed');
+    improved=d.improved; render(d);
+  }catch(e){$('err').textContent=e.message}
+  $('go').disabled=false;$('go').textContent="Improve Text";
+};
+function render(d){
+  const s=d.stats,L=[],R=[];
+  d.diff.forEach(o=>{
+    if(o.op==='equal'){L.push(esc(o.a));R.push(esc(o.b))}
+    else{ if(o.a)L.push('<del>'+esc(o.a)+'</del>'); if(o.b)R.push('<ins>'+esc(o.b)+'</ins>') }
+  });
+  const stat=(k,v)=>`<div class="stat"><b>${v}</b><span>${k}</span></div>`;
+  const rows=d.issues.map(i=>`<tr><td>${esc(i.incorrect)}</td><td>${esc(i.correct)}</td><td>${i.type}</td><td>${esc(i.explanation)}</td></tr>`).join('')||'<tr><td colspan=4>No grammar issues found.</td></tr>';
+  const sp=d.spelling.map(x=>`<tr><td>${esc(x.wrong)}</td><td>${esc(x.suggestion)}</td></tr>`).join('')||'<tr><td colspan=2>No spelling errors found.</td></tr>';
+  $('out').innerHTML=`
+  <div class="card"><h2>Improved Text</h2><div class="pane">${esc(d.improved)}</div>
+  <div class="row"><button id="dl">Download .txt</button><button class="alt" id="cp">Copy</button></div>
+  ${d.alternatives.length?'<h2>Alternative versions</h2>'+d.alternatives.map(a=>`<div class="pane" style="margin-bottom:8px">${esc(a)}</div>`).join(''):''}</div>
+  <div class="card"><h2>Writing Quality</h2><div class="stats">
+  ${stat('Original words',s.original_words)}${stat('Corrected words',s.improved_words)}${stat('Characters',s.characters)}
+  ${stat('Sentences',s.sentences)}${stat('Grammar errors',s.grammar_errors)}${stat('Spelling errors',s.spelling_errors)}
+  ${stat('Readability (before)',s.readability_before)}${stat('Readability (after)',s.readability_after)}${stat('Improvement score',s.improvement_score+'/100')}</div></div>
+  <div class="card"><h2>Before and After</h2><div class="cols"><div class="pane">${L.join(' ')}</div><div class="pane">${R.join(' ')}</div></div></div>
+  <div class="card"><h2>Grammar Explanations</h2><table><tr><th>Incorrect</th><th>Corrected</th><th>Type</th><th>Why</th></tr>${rows}</table></div>
+  <div class="card"><h2>Spelling Corrections</h2><table><tr><th>Misspelled</th><th>Suggestion</th></tr>${sp}</table></div>`;
+  $('dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([improved],{type:'text/plain'}));a.download='improved_text.txt';a.click()};
+  $('cp').onclick=()=>navigator.clipboard.writeText(improved);
+}
+</script></body></html>
